@@ -17,7 +17,7 @@
 </template>
 
 <script>
-    import HelloWorld from '@/components/HelloWorld.vue'
+    import BaseLayout from '@/components/BaseLayout.vue'
     import {getInfo} from "@/api/user";
 
     export default {
@@ -47,7 +47,7 @@
             }
         },
         components: {
-            HelloWorld
+            BaseLayout
         }
     }
 </script>
