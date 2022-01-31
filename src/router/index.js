@@ -1,17 +1,17 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import HelloWorld from "@/components/HelloWorld";
+import Base from "@/components/Base";
 
 Vue.use(VueRouter);
 
 const routes = [
     {
-        path: '/', hidden: true, component: HelloWorld, redirect: 'noRedirect', children: [
+        path: '/', hidden: true, component: Base, redirect: 'noRedirect', children: [
             {path: '', name: 'siteIndex', component: () => import('@/views/blog/index/index')}
         ]
     },
     {
-        path: '/article', hidden: true, component: HelloWorld, redirect: 'noRedirect', children: [
+        path: '/article', hidden: true, component: Base, redirect: 'noRedirect', children: [
             {path: '', name: 'sitePosts', component: () => import('@/views/blog/posts/index')}
         ]
     }
