@@ -14,18 +14,16 @@ let pages = {                                           // 在 multi-page 模式
     index: {
         entry: 'src/main.js',                           // page 的入口，除了 entry 之外都是可选的
         template: 'public/index.html',                  // 模板来源
-        // chunks: ['chunk-libs', 'chunk-commons', 'chunk-elementUI', 'runtime', 'index']
     },
     admin: {
         entry: 'src/adminMain.js',
         template: 'public/admin.html',
-        // chunks: ['chunk-libs', 'chunk-commons', 'chunk-elementUI', 'runtime', 'admin']
     }
 };
 
 if (isProduction) {
-    pages.index['chunks'] = ['chunk-libs', 'chunk-commons', 'chunk-elementUI', 'runtime', 'index'];
-    pages.admin['chunks'] = ['chunk-libs', 'chunk-commons', 'chunk-elementUI', 'runtime', 'admin'];
+    pages.index['chunks'] = ['chunk-vendors', 'runtime', 'index'];
+    pages.admin['chunks'] = ['chunk-vendors', 'runtime', 'admin'];
 }
 
 /** @type {import('@vue/cli-service').ProjectOptions} */
@@ -43,6 +41,7 @@ module.exports = {
         proxy: {                    // 前端解决跨域，后端不再解决
             '/api': {
                 target: 'http://cec2179e-cc35-4034-b1c0-8b84615b2702.mock.pstmn.io/api',
+                ws: true,
                 changOrigin: true,                  // 允许跨域
                 pathRewrite: {'^/api': '/'}         // 因为 target 带了 /api，这里去掉
             },
