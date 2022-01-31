@@ -1,12 +1,12 @@
 import {getInfo} from '@/api/user';
 
 const state = {
-    name: 'None'
+    username: 'None'
 }
 
 const mutations = {
-    set_name: (state, name) => {
-        state.name = name;
+    set_username: (state, username) => {
+        state.username = username;
     }
 }
 
@@ -19,9 +19,9 @@ const actions = {
             getInfo()
                 .then(response => {
                     console.log("返回结果：" + JSON.stringify(response.data));
-                    
-                    let data = response.data;
-                    commit('set_name', data['name']);
+
+                    let data = response.data.data;
+                    commit('set_username', data['username']);
                     resolve(response.data);
                 })
                 .catch(error => {

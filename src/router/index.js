@@ -14,7 +14,7 @@ const routes = [
         ]
     },
     {
-        path: '/article', hidden: true, component: BaseLayout, redirect: 'noRedirect', children: [
+        path: '/article/:id(\\d+)', hidden: true, component: BaseLayout, redirect: 'noRedirect', children: [
             {path: '', name: 'sitePosts', component: () => import('@/views/blog/posts/index')}
         ]
     }

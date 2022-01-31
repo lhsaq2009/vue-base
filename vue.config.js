@@ -4,7 +4,7 @@
 const path = require('path');
 const isProduction = process.env.NODE_ENV === 'production';
 
-const port = process.env.port || process.env.npm_config_port || 8080;
+const port = process.env.port || process.env.npm_config_port || 8000;
 
 // 与启动方式有关：process.env.NODE_ENV：development，production，test
 console.log("当前环境：" + process.env.NODE_ENV);
@@ -40,7 +40,7 @@ module.exports = {
         port: port,
         proxy: {                    // 前端解决跨域，后端不再解决
             '/api': {
-                target: 'http://cec2179e-cc35-4034-b1c0-8b84615b2702.mock.pstmn.io/api',
+                target: 'http://127.0.0.1:8080/api',
                 ws: true,
                 changOrigin: true,                  // 允许跨域
                 pathRewrite: {'^/api': '/'}         // 因为 target 带了 /api，这里去掉

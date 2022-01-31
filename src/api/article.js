@@ -6,3 +6,13 @@ export function getArticleById(id) {
         method: 'get'
     })
 }
+
+export function getArticleList(data, query) {
+    console.log("src/api/article.js -- 发起 axios 请求：/article/articleList");
+
+    return request({
+        url: `/article/articleList?page=${query.page}&limit=${query.limit}`,
+        method: 'post',
+        data
+    })
+}
