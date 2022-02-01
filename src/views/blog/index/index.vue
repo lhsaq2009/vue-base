@@ -37,9 +37,9 @@
 
     export default {
         asyncData({store, route}) {
-            return store.dispatch({
+            /*return store.dispatch({
                 type: "user/getInfo"
-            });
+            });*/
         },
         data() {
             return {

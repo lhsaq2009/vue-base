@@ -25,6 +25,7 @@ const actions = {
                     resolve(response.data);
                 })
                 .catch(error => {
+                    console.log(error);
                     reject(error);
                 });
         })
