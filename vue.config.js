@@ -1,7 +1,12 @@
 'use strict'
 
+const VueSSRServerPlugin = require("vue-server-renderer/server-plugin");
+const VueSSRClientPlugin = require("vue-server-renderer/client-plugin");
 
-const path = require('path');
+const nodeExternals = require("webpack-node-externals");
+const env = process.env;
+const isServer = env.RUN_ENV === "server";
+
 const isProduction = process.env.NODE_ENV === 'production';
 
 const port = process.env.port || process.env.npm_config_port || 8000;
@@ -28,13 +33,11 @@ if (isProduction) {
 
 /** @type {import('@vue/cli-service').ProjectOptions} */
 module.exports = {
-    publicPath: '/',                // 部署应用包时的基本 URL
-    outputDir: 'dist',              // 输出文件目录，当运行 vue-cli-service build 时生成的生产环境构建文件的目录，构建之前会被清除。
-    assetsDir: 'static',            // 放置生成的静态资源 (js、css、img、fonts) 的目录。
-
+    publicPath: '/',                        // 部署应用包时的基本 URL
+    outputDir: `dist/${env.RUN_ENV}`,       // 输出文件目录，当运行 vue-cli-service build 时生成的生产环境构建文件的目录，构建之前会被清除。
+    assetsDir: 'static',                    // 放置生成的静态资源 (js、css、img、fonts) 的目录。
+    lintOnSave: !isProduction,              // true 会将 lint 错误输出为编译警告，但不会使得编译失败
     pages,
-
-    lintOnSave: !isProduction,      // true 会将 lint 错误输出为编译警告，但不会使得编译失败
 
     devServer: {                    // 配置文档 v4 版本：https://v4.webpack.docschina.org/configuration/dev-server/
         port: port,
@@ -50,8 +53,19 @@ module.exports = {
 
     // Webpack 相关配置，通过 webpack-merge 合并到最终的配置中。
     configureWebpack: {   // 如果这个值是一个对象，则会通过 webpack-merge 合并到最终的配置中。
-        resolve: {},
-        plugins: [],
-        module: {}
+        // 将 entry 指向应用程序的 server / client 文件
+        entry: `./src/entry-${env.RUN_ENV}.js`,
+        devtool: "eval",
+        target: isServer ? "node" : "web",
+        output: {
+            libraryTarget: isServer ? "commonjs2" : undefined,
+        },
+        externals: isServer
+            ? nodeExternals({
+                allowlist: /\.css$/,
+            })
+            : undefined,
+        optimization: {splitChunks: isServer ? false : undefined},
+        plugins: [isServer ? new VueSSRServerPlugin() : new VueSSRClientPlugin()],
     }
 };

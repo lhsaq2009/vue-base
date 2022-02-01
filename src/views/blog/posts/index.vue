@@ -16,7 +16,9 @@
 </template>
 
 <script>
-    import BaseLayout from '@/components/BaseLayout.vue'
+
+    const BaseLayout = () => import('@/components/BaseLayout.vue');
+
     import {getArticleById} from "@/api/article";
 
     export default {

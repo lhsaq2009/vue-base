@@ -9,8 +9,9 @@
         <hr>
         <Button @click="getInfoByDispatch">通过 dispatch 触发 getInfo()，更新全局状态 name</Button>
         <br>
-        <p>瞧瞧组件里的数据，延时异步请求回来的：{{ username }}</p>
-        <p>瞧瞧 user.store 里的数据，dispatch 后台状态更新：{{ this.$store.state.user.username }}</p>
+        <p>瞧瞧组件里的数据，延时异步请求回来的：{{ username2 }}</p>
+        <!--<p>瞧瞧 user.store 里的数据，dispatch 后台状态更新：{{ this.$store.state.user.username }}</p>-->
+        <p>瞧瞧 user.store 里的数据，dispatch 后台状态更新：{{ username }}</p>
         <hr>
         <h1>文章列表</h1>
 
@@ -31,22 +32,29 @@
 <script>
     import {getInfo} from "@/api/user";
     import {getArticleList} from "@/api/article";
+    import {mapGetters} from "vuex";
+    import * as user from "@/store/modules/user";
 
     export default {
+        asyncData({store, route}) {
+            return store.dispatch({
+                type: "user/getInfo"
+            });
+        },
         data() {
             return {
                 preButton: 'hidden;',
                 nextButton: 'visible;',
 
                 list: [],
-                username: "Default",
+                username2: "username2",
                 query: {},
                 pageConf: {page: 1, limit: 2, total: 0}
             };
         },
         created() {
-            this.getUserInfo();
-            this.getArticleList();
+            // this.getUserInfo();
+            // this.getArticleList();
         },
         methods: {
             // dispatch 更新 store user 里 name
@@ -58,7 +66,7 @@
                 // 延迟 2秒后，请求数据，更新本组件的 name
                 setTimeout(() => {
                     getInfo().then(res => {
-                        this.username = res.data.data.username;
+                        this.username2 = res.data.data.username;
                     });
                 }, 2000);
             },
@@ -104,5 +112,9 @@
                 }
             }
         },
+        computed: {
+            // src/store/getters.js
+            ...mapGetters(['username'])
+        }
     }
 </script>

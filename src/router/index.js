@@ -1,29 +1,26 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-import BaseLayout from "@/components/BaseLayout";
+import Vue from 'vue';
+import VueRouter from 'vue-router';
 
 Vue.use(VueRouter);
 
-const routes = [
-    /**
-     * hidden：是否需要展示该路由是否渲染该路由入口
-     */
-    {
-        path: '/', hidden: true, component: BaseLayout, redirect: 'noRedirect', children: [
-            {path: '', name: 'siteIndex', component: () => import('@/views/blog/index/index')}
-        ]
-    },
-    {
-        path: '/article/:id(\\d+)', hidden: true, component: BaseLayout, redirect: 'noRedirect', children: [
-            {path: '', name: 'sitePosts', component: () => import('@/views/blog/posts/index')}
-        ]
-    }
-]
+const routes = [{
+    path: '/', hidden: true, component: () => import('../components/BaseLayout.vue'), redirect: 'noRedirect', children: [
+        {path: '', name: 'siteIndex', component: () => import('@/views/blog/index/index')}
+    ]
+}, {
+    path: '/article/:id(\\d+)', hidden: true, component: () => import('../components/BaseLayout.vue'), redirect: 'noRedirect', children: [
+        {path: '', name: 'sitePosts', component: () => import('@/views/blog/posts/index')}
+    ]
+}];
 
-const indexRouter = new VueRouter({
-    mode: 'history',
-    base: process.env.BASE_URL,
-    routes
-});
+export function createRouter() {
+    return new VueRouter({
+        mode: 'history',
+        base: process.env.BASE_URL,
+        routes
+    });
+}
+
+const indexRouter = createRouter();
 
 export default indexRouter;

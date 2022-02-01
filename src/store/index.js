@@ -3,17 +3,19 @@ import Vuex from 'vuex'
 import user from "@/store/modules/user";
 import getters from "@/store/getters";
 
-Vue.use(Vuex)
+Vue.use(Vuex);
 
-export default new Vuex.Store({
-    state: {
-        path: "src/store/index.js"
-    },
-    mutations: {},
-    actions: {},
+export function createStore() {
+    return new Vuex.Store({
+        state: {
+            path: "src/store/index.js"
+        },
+        mutations: {},
+        actions: {},
 
-    modules: {
-        user
-    },
-    getters
-})
+        modules: {
+            user
+        },
+        getters
+    });
+}
