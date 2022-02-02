@@ -16,8 +16,8 @@
 </template>
 
 <script>
-
     const BaseLayout = () => import('@/components/BaseLayout.vue');
+    let util = require("util");
 
     import {getArticleById} from "@/api/article";
 
@@ -34,7 +34,8 @@
         methods: {
             getArticleInfo() {
                 getArticleById(this.$route.params.id).then(res => {
-                    this.article = res.data;
+                    console.log("getArticleById:" + util.inspect(res.data));
+                    this.article = res.data;        // 直接 JSON 显示整个接口数据
                 });
             }
         },

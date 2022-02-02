@@ -9,7 +9,7 @@
         <hr>
         <Button @click="getInfoByDispatch">通过 dispatch 触发 getInfo()，更新全局状态 name</Button>
         <br>
-        <p>瞧瞧组件里的数据，延时异步请求回来的：{{ username2 }}</p>
+        <!--<p>瞧瞧组件里的数据，延时异步请求回来的：{{ username2 }}</p>-->
         <!--<p>瞧瞧 user.store 里的数据，dispatch 后台状态更新：{{ this.$store.state.user.username }}</p>-->
         <p>瞧瞧 user.store 里的数据，dispatch 后台状态更新：{{ username }}</p>
         <hr>
@@ -54,7 +54,9 @@
         },
         created() {
             // this.getUserInfo();
-            // this.getArticleList();
+            console.log("created()");
+            // todo 嗨森，ssr 时，这里在浏览器控制台输出 404，2022-02-02
+            this.getArticleList();
         },
         methods: {
             // dispatch 更新 store user 里 name
@@ -73,7 +75,6 @@
             getArticleList() {
                 getArticleList(this.query, this.pageConf)
                     .then(res => {
-                        console.log("/article/articleList 返回：" + JSON.stringify(res.data));
                         this.list = res.data.data.rows;
                         this.pageConf.total = res.data.data.total;
                     });
@@ -112,7 +113,7 @@
             }
         },
         computed: {
-            // src/store/getters.js
+            // src/store/getters.js，在上面 <template> 里面通过：{{ username }} 访问
             ...mapGetters(['username'])
         }
     }

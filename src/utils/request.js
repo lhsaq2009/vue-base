@@ -6,7 +6,8 @@ const service = axios.create({
     proxy: {
         host: '127.0.0.1',
         port: 8081
-    }
-})
+    },
+    // headers: window ? window.ssr_cookie || {} : {}
+});
 
 export default service;

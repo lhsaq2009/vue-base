@@ -4,7 +4,8 @@ import Vue from 'vue';
 const {app, router, store} = createApp()
 
 // 客户端预取数据
-Vue.mixin({
+// 注释掉：解决客户端也发起 asyncData 里的异步请求
+/*Vue.mixin({
     beforeMount() {
         const {asyncData} = this.$options
         if (asyncData) {
@@ -14,7 +15,7 @@ Vue.mixin({
             })
         }
     }
-})
+})*/
 
 // 当使用 template 时，context.state 将作为 window.__INITIAL_STATE__ 状态，自动嵌入到最终的 HTML 中
 if (window.__INITIAL_STATE__) {

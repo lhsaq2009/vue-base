@@ -9,7 +9,7 @@ const isServer = env.RUN_ENV === "server";
 
 const isProduction = process.env.NODE_ENV === 'production';
 
-const port = process.env.port || process.env.npm_config_port || 8000;
+const port = process.env.port || process.env.npm_config_port || 3000;
 
 // 与启动方式有关：process.env.NODE_ENV：development，production，test
 console.log("当前环境：" + process.env.NODE_ENV);
@@ -40,17 +40,18 @@ module.exports = {
     pages,
 
     // 注释掉，在 src/utils/request.js 配置的代理
-    /*devServer: {                    // 配置文档 v4 版本：https://v4.webpack.docschina.org/configuration/dev-server/
+    // TODO haisen SSR 模式下，这里好像用不到呀，2022-02-02
+    devServer: {                            // 配置文档 v4 版本：https://v4.webpack.docschina.org/configuration/dev-server/
         port: port,
-        proxy: {                    // 前端解决跨域，后端不再解决
+        proxy: {                            // 前端解决跨域，后端不再解决
             '/api': {
-                target: 'http://127.0.0.1:8080/api',
+                target: '127.0.0.1:8081/api',
                 ws: true,
                 changOrigin: true,                  // 允许跨域
                 pathRewrite: {'^/api': '/'}         // 因为 target 带了 /api，这里去掉
             },
         }
-    },*/
+    },
 
     // Webpack 相关配置，通过 webpack-merge 合并到最终的配置中。
     configureWebpack: {   // 如果这个值是一个对象，则会通过 webpack-merge 合并到最终的配置中。
@@ -68,5 +69,20 @@ module.exports = {
             : undefined,
         optimization: {splitChunks: isServer ? false : undefined},
         plugins: [isServer ? new VueSSRServerPlugin() : new VueSSRClientPlugin()],
+        module: {
+            /*rules: [
+                {test: /\.vue$/, use: 'vue-loader'},
+                {test: /\.js$/, use: 'babel-loader'},
+                {test: /\.css$/, use: ['vue-style-loader', 'css-loader', 'postcss-loader']},
+                {
+                    test: /\.(jpg|jpeg|png|gif|svg)$/, use: {
+                        loader: 'url-loader',
+                        options: {
+                            limit: 10000    // 10Kb
+                        }
+                    }
+                }
+            ]*/
+        },
     }
 };
