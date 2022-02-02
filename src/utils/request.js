@@ -1,8 +1,12 @@
 import axios from 'axios';
 
 const service = axios.create({
-    baseURL: process.env.VUE_APP_BASE_API,
-    timeout: 30 * 1000
+    baseURL: '/api',
+    timeout: 30 * 1000,
+    proxy: {
+        host: '127.0.0.1',
+        port: 8081
+    }
 })
 
 export default service;

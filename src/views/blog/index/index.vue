@@ -37,9 +37,9 @@
 
     export default {
         asyncData({store, route}) {
-            /*return store.dispatch({
+            return store.dispatch({
                 type: "user/getInfo"
-            });*/
+            });
         },
         data() {
             return {
@@ -74,7 +74,6 @@
                 getArticleList(this.query, this.pageConf)
                     .then(res => {
                         console.log("/article/articleList 返回：" + JSON.stringify(res.data));
-
                         this.list = res.data.data.rows;
                         this.pageConf.total = res.data.data.total;
                     });

@@ -39,7 +39,8 @@ module.exports = {
     lintOnSave: !isProduction,              // true 会将 lint 错误输出为编译警告，但不会使得编译失败
     pages,
 
-    devServer: {                    // 配置文档 v4 版本：https://v4.webpack.docschina.org/configuration/dev-server/
+    // 注释掉，在 src/utils/request.js 配置的代理
+    /*devServer: {                    // 配置文档 v4 版本：https://v4.webpack.docschina.org/configuration/dev-server/
         port: port,
         proxy: {                    // 前端解决跨域，后端不再解决
             '/api': {
@@ -49,7 +50,7 @@ module.exports = {
                 pathRewrite: {'^/api': '/'}         // 因为 target 带了 /api，这里去掉
             },
         }
-    },
+    },*/
 
     // Webpack 相关配置，通过 webpack-merge 合并到最终的配置中。
     configureWebpack: {   // 如果这个值是一个对象，则会通过 webpack-merge 合并到最终的配置中。
