@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import user from "@/store/modules/user";
 import getters from "@/store/getters";
+import article from "@/store/modules/article";
 
 Vue.use(Vuex);
 
@@ -14,7 +15,8 @@ export function createStore() {
         actions: {},
 
         modules: {
-            user
+            user,
+            article
         },
         getters
     });

@@ -1,7 +1,7 @@
 import request from '@/utils/request'
 
 export function getArticleById(id) {
-    console.log("src/api/article.js -- 发起 axios 请求：/article/getArticleById");
+    console.log("src/api/article.js -- 发起 axios 请求：/article/getArticleById，路径：" + `/article/${id}`);
 
     return request({
         url: `/article/${id}`,

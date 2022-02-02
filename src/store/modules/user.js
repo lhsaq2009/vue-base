@@ -22,7 +22,7 @@ const actions = {
 
                     let data = response.data.data;
                     commit('set_username', data['username']);
-                    resolve(response.data);
+                    resolve();
                 })
                 .catch(error => {
                     console.log(error);

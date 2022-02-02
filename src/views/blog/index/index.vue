@@ -15,7 +15,7 @@
         <hr>
         <h1>文章列表</h1>
 
-        <ul v-bind:style="'height: ' + 22 * this.pageConf.limit + 'px;'">
+        <ul v-bind:style="'height: ' + 22 * pageConf.limit + 'px;'">
             <template v-for="(item, i) in list">
                 <li><a v-bind:href="'/article/' + item.id">{{ item.title }}</a></li>
             </template>
@@ -31,32 +31,33 @@
 
 <script>
     import {getInfo} from "@/api/user";
-    import {getArticleList} from "@/api/article";
     import {mapGetters} from "vuex";
-    import * as user from "@/store/modules/user";
+
+    // 合并多个接口 axios.all：https://github.com/193Eric/study/issues/11
+    const fetchInitialData = ({store, route}) => {
+        let pageConf = store.state.article.pageConf;
+        let query = store.state.article.query;
+
+        // return store.dispatch({type: "user/getInfo"});
+        return store.dispatch({
+            type: "article/getArticleList",
+            payload: {
+                query, pageConf
+            }
+        });
+    };
 
     export default {
-        asyncData({store, route}) {
-            return store.dispatch({
-                type: "user/getInfo"
-            });
-        },
+        asyncData: fetchInitialData,
         data() {
             return {
                 preButton: 'hidden;',
                 nextButton: 'visible;',
-
-                list: [],
                 username2: "username2",
-                query: {},
-                pageConf: {page: 1, limit: 2, total: 0}
             };
         },
         created() {
-            // this.getUserInfo();
-            console.log("created()");
-            // todo 嗨森，ssr 时，这里在浏览器控制台输出 404，2022-02-02
-            this.getArticleList();
+            // this.getUserInfo();  // 在 SSR 服务器渲染前，要预先获取所有需要的异步数据，然后存到 Vuex 的 store 中
         },
         methods: {
             // dispatch 更新 store user 里 name
@@ -72,49 +73,46 @@
                     });
                 }, 2000);
             },
-            getArticleList() {
-                getArticleList(this.query, this.pageConf)
-                    .then(res => {
-                        this.list = res.data.data.rows;
-                        this.pageConf.total = res.data.data.total;
-                    });
-            },
             nextPage() {
                 console.log("nextPage()");
-                let currentCount = this.pageConf.page * this.pageConf.limit;
-                if ((this.pageConf.total - currentCount) / this.pageConf.limit >= 0) {
+
+                /*let pageConf = this.$store.state.article.pageConf;
+
+                let currentCount = pageConf.page * pageConf.limit;
+                if ((pageConf.total - currentCount) / pageConf.limit >= 0) {
                     this.nextButton = 'visible;';
                     this.preButton = 'visible;';
 
-                    this.pageConf.page = this.pageConf.page + 1;
+                    pageConf.page = pageConf.page + 1;
                     this.getArticleList();
                 }
 
-                if ((this.pageConf.total - currentCount) < this.pageConf.limit) {
+                if ((pageConf.total - currentCount) < pageConf.limit) {
                     this.nextButton = 'hidden;';
                 }
 
-                if (this.pageConf.total - currentCount > 0) {
+                if (pageConf.total - currentCount > 0) {
                     this.getArticleList();
-                }
+                }*/
             },
             prePage() {
                 console.log("prePage()");
+                /*let pageConf = this.$store.state.article.pageConf;
 
-                if (this.pageConf.page > 1) {
+                if (pageConf.page > 1) {
                     this.nextButton = 'visible;';
-                    this.pageConf.page = this.pageConf.page - 1;
+                    pageConf.page = pageConf.page - 1;
                     this.getArticleList();
                 }
 
-                if (this.pageConf.page <= 1) {
+                if (pageConf.page <= 1) {
                     this.preButton = 'hidden;'
-                }
+                }*/
             }
         },
         computed: {
             // src/store/getters.js，在上面 <template> 里面通过：{{ username }} 访问
-            ...mapGetters(['username'])
+            ...mapGetters(['username', 'pageConf', 'list'])
         }
     }
 </script>

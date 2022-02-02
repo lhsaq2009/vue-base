@@ -42,12 +42,12 @@ const microCache = new LRU({
 app.get('*', async (req, res) => {
     try {
         // 根据 url 获取缓存页面
-        const hit = microCache.get(req.url);
-        // 如果有缓存则直接返回缓存数据
-        if (hit) {
-            console.log("hit return");
-            return res.end(hit);
-        }
+        // const hit = microCache.get(req.url);
+        // // 如果有缓存则直接返回缓存数据
+        // if (hit) {
+        //     console.log("hit return");
+        //     return res.end(hit);
+        // }
 
         // window ? window.ssr_cookie = req.cookie : undefined;
 
@@ -59,14 +59,14 @@ app.get('*', async (req, res) => {
             url: req.url,
             title: 'index.template.html test from server.js'
         };
-
-        console.log("process.env.RUN_ENV：" + process.env.RUN_ENV);
+        
+        // console.log("process.env.RUN_ENV：" + process.env.RUN_ENV);
         const html = await renderToString(context);
 
         res.setHeader('Content-Type', 'text/html; charset=utf-8');
         res.send(html);
         // 将页面缓存到缓存对象中
-        microCache.set(req.url, html);
+        // microCache.set(req.url, html);
     } catch (e) {
         res.send('服务端异常：' + e);
     }

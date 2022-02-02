@@ -16,31 +16,31 @@
 </template>
 
 <script>
+    import {mapGetters} from "vuex";
+
     const BaseLayout = () => import('@/components/BaseLayout.vue');
     let util = require("util");
 
-    import {getArticleById} from "@/api/article";
-
     export default {
+        asyncData({store, route}) {
+            // 必须得 return
+            return store.dispatch({
+                type: "article/getArticleById",
+                id: route.params.id
+            });
+        },
         name: 'Home',
         data() {
-            return {
-                article: '{}'
-            }
+            return {}
         },
         created() {
-            this.getArticleInfo();
         },
-        methods: {
-            getArticleInfo() {
-                getArticleById(this.$route.params.id).then(res => {
-                    console.log("getArticleById:" + util.inspect(res.data));
-                    this.article = res.data;        // 直接 JSON 显示整个接口数据
-                });
-            }
-        },
+        methods: {},
         components: {
             BaseLayout
+        },
+        computed: {
+            ...mapGetters(['article'])
         }
     }
 </script>
