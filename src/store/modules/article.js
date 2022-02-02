@@ -1,5 +1,4 @@
 import {getArticleById, getArticleList} from '@/api/article';
-import {query} from "express";
 
 const state = {
     list: [],
