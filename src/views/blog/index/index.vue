@@ -9,7 +9,9 @@
         <hr>
         <Button @click="getInfoByDispatch">通过 dispatch 触发 getInfo()，更新全局状态 name</Button>
         <br>
-        <!--<p>瞧瞧组件里的数据，延时异步请求回来的：{{ username2 }}</p>-->
+        <Button @click="getUserInfo">通过 methods 触发 getInfo()，更新组件里 username</Button>
+        <br>
+        <p>瞧瞧组件里的数据，延时异步请求回来的：{{ username2 }}</p>
         <!--<p>瞧瞧 user.store 里的数据，dispatch 后台状态更新：{{ this.$store.state.user.username }}</p>-->
         <p>瞧瞧 user.store 里的数据，dispatch 后台状态更新：{{ username }}</p>
         <hr>
@@ -32,23 +34,26 @@
 <script>
     import {getInfo} from "@/api/user";
     import {mapGetters} from "vuex";
+    import * as article from "@/store/modules/article";
 
     // 合并多个接口 axios.all：https://github.com/193Eric/study/issues/11
-    const fetchInitialData = ({store, route}) => {
+    const getArticleListByDispatch = ({store, route}) => {
         let pageConf = store.state.article.pageConf;
         let query = store.state.article.query;
 
-        // return store.dispatch({type: "user/getInfo"});
-        return store.dispatch({
-            type: "article/getArticleList",
-            payload: {
-                query, pageConf
-            }
-        });
+        return Promise.all([
+            store.dispatch({type: "user/getInfo"}),
+            store.dispatch({
+                type: "article/getArticleList",
+                payload: {
+                    query, pageConf
+                }
+            })
+        ]);
     };
 
     export default {
-        asyncData: fetchInitialData,
+        asyncData: getArticleListByDispatch,
         data() {
             return {
                 preButton: 'hidden;',
@@ -75,8 +80,8 @@
             },
             nextPage() {
                 console.log("nextPage()");
-
-                /*let pageConf = this.$store.state.article.pageConf;
+                
+                let pageConf = this.$store.state.article.pageConf;
 
                 let currentCount = pageConf.page * pageConf.limit;
                 if ((pageConf.total - currentCount) / pageConf.limit >= 0) {
@@ -84,30 +89,31 @@
                     this.preButton = 'visible;';
 
                     pageConf.page = pageConf.page + 1;
-                    this.getArticleList();
+                    this.$store.commit(article.SET_PAGECONF, pageConf);
+                    getArticleListByDispatch({store: this.$store});
                 }
 
                 if ((pageConf.total - currentCount) < pageConf.limit) {
                     this.nextButton = 'hidden;';
                 }
 
-                if (pageConf.total - currentCount > 0) {
-                    this.getArticleList();
+                /*if (pageConf.total - currentCount > 0) {
+                    getArticleListByDispatch({store: this.$store});
                 }*/
             },
             prePage() {
                 console.log("prePage()");
-                /*let pageConf = this.$store.state.article.pageConf;
+                let pageConf = this.$store.state.article.pageConf;
 
                 if (pageConf.page > 1) {
                     this.nextButton = 'visible;';
                     pageConf.page = pageConf.page - 1;
-                    this.getArticleList();
+                    getArticleListByDispatch({store: this.$store});
                 }
 
                 if (pageConf.page <= 1) {
                     this.preButton = 'hidden;'
-                }*/
+                }
             }
         },
         computed: {

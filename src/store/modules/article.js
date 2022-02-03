@@ -17,6 +17,11 @@ const mutations = {
             total: data.total
         };
     },
+    [SET_PAGECONF](state, pageConf) {
+        state.pageConf = {
+            ...state.pageConf,
+        };
+    },
     set_article(state, article) {
         state.article = article;
     }
@@ -50,6 +55,8 @@ const actions = {
         });
     }
 }
+
+export const SET_PAGECONF = "set_pageConf";
 
 export default {
     namespaced: true,
