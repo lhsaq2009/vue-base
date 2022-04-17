@@ -1,19 +1,10 @@
 # vue-base
 
-## Project setup
-```
-npm install
-```
+## vue_ssr_改造
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+运行：
 
-### Compiles and minifies for production
+```Shell
+# 在 vue-base git:(vue_ssr_改造) 
+npm run start
 ```
-npm run build
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
